@@ -2,7 +2,10 @@ package io.rantlogger;
 
 import io.babyredis.client.BabyRedisClient;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 
 public class RantLogger {
     public static final String RANT_SET = "rants";
@@ -32,7 +35,8 @@ public class RantLogger {
                 case "LIST" -> {
                     String[] rants = client.sMembers(RANT_SET);
                     for(String key: rants){
-                        System.out.println(key + " → " + client.get(key));
+                        Timestamp ts = new Timestamp(Long.parseLong(key.split(":")[1]));
+                        System.out.println(key + " → " + client.get(key) + " - Recorded : " + new Date(ts.getTime()) );
                     }
                 }
                 case "FIND" -> {
@@ -57,6 +61,19 @@ public class RantLogger {
 
                     System.out.println("Deleted.");
 
+                }
+                case "CLEAR" -> {
+                    String[] rants = client.sMembers(RANT_SET);
+                    for (String key : rants){
+                        client.delete(key);
+                    }
+                    client.sRem(RANT_SET, rants);
+                    System.out.println("Cleared successfully.");
+                }
+                case "COUNT" -> {
+                    String[] rants = client.sMembers(RANT_SET);
+
+                    System.out.println("Number of rants: " + rants.length);
                 }
                 default -> {
                     // everything else is a rant message
