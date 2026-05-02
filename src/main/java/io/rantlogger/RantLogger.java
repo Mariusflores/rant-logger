@@ -2,9 +2,7 @@ package io.rantlogger;
 
 import io.babyredis.client.BabyRedisClient;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Date;
 
 public class RantLogger {
