@@ -1,4 +1,4 @@
-package org.example;
+package io.rantlogger;
 
 import org.junit.jupiter.api.Test;
 
